@@ -13,50 +13,60 @@ These are HTML strings. As part of the course, you'll be using JavaScript functi
 replace the %data% placeholder text you see in them.
 */
 var HTMLheaderName = '<h1 id="name">%data%</h1>';
-var HTMLheaderRole = '<span>%data%</span><hr/>';
+var HTMLheaderRole = '<span>%data%</span>';
 
-var HTMLcontactGeneric = '<li class="flex-item"><span class="orange-text">%contact%</span><span class="white-text">%data%</span></li>';
-var HTMLmobile = '<li class="flex-item"><span class="orange-text">mobile</span><span class="white-text">%data%</span></li>';
-var HTMLemail = '<li class="flex-item"><span class="orange-text">email</span><span class="white-text">%data%</span></li>';
-var HTMLtwitter = '<li class="flex-item"><span class="orange-text">twitter</span><span class="white-text">%data%</span></li>';
-var HTMLgithub = '<li class="flex-item"><span class="orange-text">github</span><span class="white-text">%data%</span></li>';
-var HTMLblog = '<li class="flex-item"><span class="orange-text">blog</span><span class="white-text">%data%</span></li>';
-var HTMLlocation = '<li class="flex-item"><span class="orange-text">location</span><span class="white-text">%data%</span></li>';
+var HTMLcontactGeneric = '<li class="flex-item"><span class="dark-grey-text">%contact%</span><span class="white-text">%data%</span></li>';
+var HTMLmobile = '<li class="flex-item"><span class="dark-grey-text">mobile</span><span class="white-text">%data%</span></li>';
+var HTMLemail = '<li class="flex-item"><span class="dark-grey-text">email</span><span class="white-text">%data%</span></li>';
+var HTMLtwitter = '<li class="flex-item"><span class="dark-grey-text">twitter</span><span class="white-text">%data%</span></li>';
+var HTMLgithub = '<li class="flex-item"><span class="dark-grey-text">github</span><span class="white-text">%data%</span></li>';
+var HTMLblog = '<li class="flex-item"><span class="dark-grey-text">blog</span><span class="white-text">%data%</span></li>';
+var HTMLlocation = '<li class="flex-item"><span class="dark-grey-text">location</span><span class="white-text">%data%</span></li>';
 
 var HTMLbioPic = '<img src="%data%" class="biopic">';
-var HTMLwelcomeMsg = '<span class="welcome-message">%data%</span>';
 
-var HTMLskillsStart = '<h3 id="skills-h3">Skills at a Glance:</h3><ul id="skills" class="flex-box"></ul>';
+var HTMLwelcomeMsg = '<h2 class="description">%data%</h2>';
+
+var HTMLskillsStart = '<h3 id="skills-h3"></h3><ul id="skills" class="flex-box"></ul>';
 var HTMLskills = '<li class="flex-item"><span class="white-text">%data%</span></li>';
 
 var HTMLworkStart = '<div class="work-entry"></div>';
 var HTMLworkEmployer = '<a href="#">%data%';
-var HTMLworkTitle = ' - %data%</a>';
+var HTMLworkTitle = ' %data%</a>';
 var HTMLworkDates = '<div class="date-text">%data%</div>';
 var HTMLworkLocation = '<div class="location-text">%data%</div>';
-var HTMLworkDescription = '<p><br>%data%</p>';
+var HTMLworkDescription = '<p>%data%</p>';
 
 var HTMLprojectStart = '<div class="project-entry"></div>';
-var HTMLprojectTitle = '<a href="#">%data%</a>';
+var HTMLprojectTitle = '<a class="project-title" href="#">%data%</a>';
 var HTMLprojectDates = '<div class="date-text">%data%</div>';
-var HTMLprojectDescription = '<p><br>%data%</p>';
-var HTMLprojectImage = '<img src="%data%">';
+var HTMLprojectDescription = '<p>%data%</p>';
+var HTMLprojectImage = '<img class="projectImage" src="%data%">';
+var HTMLProjectURL = '<a href="%#%">%data%</a>';
 
 var HTMLschoolStart = '<div class="education-entry"></div>';
 var HTMLschoolName = '<a href="#">%data%';
-var HTMLschoolDegree = ' -- %data%</a>';
+var HTMLschoolDegree = ' %data%</a>';
 var HTMLschoolDates = '<div class="date-text">%data%</div>';
 var HTMLschoolLocation = '<div class="location-text">%data%</div>';
-var HTMLschoolMajor = '<em><br>Major: %data%</em>';
+var HTMLschoolMajor = '<h4 id="major">%data%<br><br><br></h4>';
 
-var HTMLonlineClasses = '<h3>Online Classes</h3>';
-var HTMLonlineTitle = '<a href="#">%data%';
-var HTMLonlineSchool = ' - %data%</a>';
+var HTMLonlineClasses = '<h3 id="onlineClassesTitle">Online Classes</h3>';
+var HTMLonlineSchool = '<a href="#">%data%';
+var HTMLonlineTitle = ' %data%</a>';
 var HTMLonlineDates = '<div class="date-text">%data%</div>';
+var HTMLonlineSubject = '<h4 id="major">%data%</h4>';
 var HTMLonlineURL = '<br><a href="#">%data%</a>';
+
+var HTMLhobbyStart = '<div class="hobby-entry"></div>';
+var HTMLhobbyEntry = '<h4 id="hobbyEntry">%data%</h4>';
 
 var internationalizeButton = '<button>Internationalize</button>';
 var googleMap = '<div id="map"></div>';
+
+var twitterButton = '<a href="https://twitter.com/pinienbaum" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @pinienbaum</a>';
+var githubButton = '<a class="github-button" href="https://github.com/pinienbaum" aria-label="Follow @pinienbaum on GitHub">Follow @pinienbaum</a>';
+var HTMLemailIcon = '<a href="mailto:hi@pinienbaum.com"><img class="emailIcon" src="%data%"></a>';
 
 
 /*
@@ -85,7 +95,9 @@ function logClicks(x,y) {
 }
 
 $(document).click(function(loc) {
-  // your code goes here!
+  var x = loc.pageX;
+  var y = loc.pageY;
+  logClicks(x,y);
 });
 
 
@@ -96,7 +108,7 @@ See the documentation below for more details.
 https://developers.google.com/maps/documentation/javascript/reference
 */
 var map;    // declares a global map variable
-
+var infowindow;
 
 /*
 Start here! initializeMap() is called when page is loaded.
@@ -106,7 +118,8 @@ function initializeMap() {
   var locations;
 
   var mapOptions = {
-    disableDefaultUI: true
+    styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#e9e9e9"},{"lightness":17}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":16}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":21}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#dedede"},{"lightness":21}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"lightness":16}]},{"elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#333333"},{"lightness":40}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#f2f2f2"},{"lightness":19}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#fefefe"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#fefefe"},{"lightness":17},{"weight":1.2}]}]
+  //  disableDefaultUI: true
   };
 
   /* 
@@ -123,7 +136,7 @@ function initializeMap() {
   function locationFinder() {
 
     // initializes an empty array
-    var locations = [];
+    var locations = ["Taipei, Taiwan", "Florence, Italy",];
 
     // adds the single location property from bio to the locations array
     locations.push(bio.contacts.location);
@@ -139,7 +152,7 @@ function initializeMap() {
     for (var job in work.jobs) {
       locations.push(work.jobs[job].location);
     }
-
+    console.log(locations)
     return locations;
   }
 
@@ -148,6 +161,8 @@ function initializeMap() {
   placeData is the object returned from search results containing information
   about a single location.
   */
+
+
   function createMapMarker(placeData) {
 
     // The next lines save location data from the search result object to local variables
@@ -155,7 +170,15 @@ function initializeMap() {
     var lon = placeData.geometry.location.lng();  // longitude from the place service
     var name = placeData.formatted_address;   // name of the place from the place service
     var bounds = window.mapBounds;            // current boundaries of the map window
-
+    var infotext = {"Reykjavík, Iceland": "<b>Reykjavík.</b> This has been my home on-and-off since 2006. First came to work in an architecture studio and later moved into advertising.",
+                    "Los Angeles, CA, USA": "<b>Los Angeles.</b> Here I studied film - mostly cinematography and directing at UCLA Extension.",
+                    "Paris, France": "<b>Paris.</b> Where I did an MA in Contemporary Art and Photography",
+                    "São Paulo - State of São Paulo, Brazil": "<b>São Paulo.</b> My second home and where I've done my most interesting advertising work.",
+                    "Belo Horizonte, State of Minas Gerais, Brazil": "<b>Belo Horizonte.</b> My birthplace. Here I also attended the reputable School of Architecture of the Federal State of Minas Gerais.",
+                    "Florence, Italy": "<b>Florence</b> In 2011 I was invited to show my work at the Florence Biennale.",
+                    "Taipei, Taiwan": "<b>Taipei</b> Ok here I just worked for a week, in an ad campaign, but it was remarkable!",
+                    "Berlin, Germany": "<b>Berlin.</b> My current home and stage of experimentations in film and programming."
+                  };
     // marker is an object with additional data about the pin for a single location
     var marker = new google.maps.Marker({
       map: map,
@@ -166,14 +189,25 @@ function initializeMap() {
     // infoWindows are the little helper windows that open when you click
     // or hover over a pin on a map. They usually contain more information
     // about a location.
-    var infoWindow = new google.maps.InfoWindow({
-      content: name
-    });
+    // var infoWindow = new google.maps.InfoWindow({
+    //   content: infotext[name],
+    //   maxWidth: 100
+    // });
 
     // hmmmm, I wonder what this is about...
+
     google.maps.event.addListener(marker, 'click', function() {
-      // your code goes here!
+      
+      if (infowindow) {
+        infowindow.close();
+      } 
+      infowindow = new google.maps.InfoWindow({
+          content: infotext[name],
+          maxWidth: 100
+      });
+      infowindow.open(map, marker);      
     });
+
 
     // this is where the pin actually gets added to the map.
     // bounds.extend() takes in a map location object
@@ -230,16 +264,15 @@ function initializeMap() {
 
 }
 
-/*
-Uncomment the code below when you're ready to implement a Google Map!
-*/
 
 // Calls the initializeMap() function when the page loads
-//window.addEventListener('load', initializeMap);
+window.addEventListener('load', initializeMap);
 
 // Vanilla JS way to listen for resizing of the window
 // and adjust map bounds
-//window.addEventListener('resize', function(e) {
+window.addEventListener('resize', function(e) {
   //Make sure the map bounds get updated on page resize
-//  map.fitBounds(mapBounds);
-//});
+map.fitBounds(mapBounds);
+});
+
+
